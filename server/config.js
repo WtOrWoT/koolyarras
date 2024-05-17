@@ -29,8 +29,8 @@ module.exports = {
     ROOM_SETUP: ['map_apspp_default'],
 
     // The dimensions of a single tile on the map.
-    TILE_WIDTH: 600,
-    TILE_HEIGHT: 600,
+    TILE_WIDTH: 250,
+    TILE_HEIGHT: 250,
 
 
 
@@ -105,7 +105,7 @@ module.exports = {
     LEVEL_CHEAT_CAP: 45,
 
     // Amount of player-bots to spawn.
-    BOTS: 1,
+    BOTS: 5,
 
     // How much XP player-bots get per second until they reach LEVEL_CAP.
     BOT_XP: 125,

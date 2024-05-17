@@ -7,6 +7,10 @@ Class.semitransparentBullet = {
     PARENT: "bullet",
     ALPHA: 0.5
 };
+Class.semitransparentBullet2 = {
+    PARENT: "bullet",
+    ALPHA: 0.5
+};
 // Bullets
 Class.splitterBullet = {
     PARENT: "bullet",

@@ -1463,7 +1463,7 @@ Class.tracker3 = {
 // BOTS
 Class.bot = {
     FACING_TYPE: "looseToTarget",
-    NAME: "[AI] ",
+    NAME: "§#939393§[AI] ",
     CONTROLLERS: ["nearestDifferentMaster", "mapAltToFire", "minion", "fleeAtLowHealth", ["mapFireToAlt", { onlyIfHasAltFireGun: true }], ["wanderAroundMap", { immitatePlayerMovement: true, lookAtGoal: true }]],
 };
 

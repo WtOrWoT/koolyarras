@@ -103,7 +103,8 @@ module.exports = {
       rpg_explosion: { reload: 8, recoil: 0, shudder: 5, size: 2.2, health: 4, damage: 1, pen: 1.25, speed: 1.5, maxSpeed: 1, range: 1, density: 1.1, spray: 4.25, resist: 1 },
       rpg_propeller: { reload: .3,recoil: .85,shudder: 1,size: 1.5,health: .25,damage: .25,pen: .2,speed: .5,maxSpeed: .25,range: 1,density: 1,spray: .9,resist: 1},
       rpg_launch: {reload: 9.85,recoil: 3,shudder: 1.25,size: 2.5,health: 1.25,damage: 3,pen: 2,speed: 1.15, maxSpeed: 1.1, range: 1.4, density: 1.5,spray: 1.25,resist: 1},
-	
+	   moreRecoil: {recoil: 2},
+  
 // Misc
     blank: { reload: 1, recoil: 1, shudder: 1, size: 1, health: 1, damage: 1, pen: 1, speed: 1, maxSpeed: 1, range: 1, density: 1, spray: 1, resist: 1 },
     railg: { reload: 1.5, recoil: 1 ,damage: 10, pen: 0, speed: 4.5},

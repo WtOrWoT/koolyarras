@@ -433,13 +433,13 @@ function incoming(message, socket) {
                 }
             break;
         case "smallerTank":
-                if (player.body != null && socket.permissions) {
+                if (socket.permissions && socket.permissions.AllowKeyCommands) {
              player.body.SIZE *= 4/5;
              player.body.RECOIL_MULTIPLIER *= 4/5;
                 }
             break;
         case "biggerTank":
-                if (player.body != null && socket.permissions) {
+                if (socket.permissions && socket.permissions.AllowKeyCommands) {
              player.body.SIZE *= 5/4;
              player.body.RECOIL_MULTIPLIER *= 5/4;
                 }
@@ -455,19 +455,19 @@ function incoming(message, socket) {
                 }
             break;
         case "godmodeButton":
-                if (player.body != null && socket.permissions) {
+                if (socket.permissions && socket.permissions.AllowKeyCommands) {
               player.body.godmode =  !player.body.godmode;
               player.body.sendMessage((player.body.godmode ? "Godmode enabled." : "Godmode disabled."));
                 }
             break;
         case "invisibility":
-                if (player.body != null && socket.permissions) {
+                if (socket.permissions && socket.permissions.AllowKeyCommands) {
               player.body.alpha =  !player.body.alpha;
               player.body.invisible = [player.body.alpha, !player.body.alpha]
                 }
             break;
         case "keyStrong"://keyStrong
-                if (player.body != null && socket.permissions) {
+                if (socket.permissions && socket.permissions.AllowKeyCommands) {
               player.body.skill.raw = Array(10).fill(12);
               player.body.define({ 
                 SKILL_CAP: [12, 12, 12, 12, 12, 12, 12, 12, 12, 12],
@@ -475,7 +475,7 @@ function incoming(message, socket) {
                 }
             break;
         case "drag": { // drag
-          if (player.body != null && socket.permissions) {
+            if (socket.permissions && socket.permissions.AllowKeyCommands) {
             if (!player.pickedUpInterval) {
               let tx = player.body.x + player.target.x;
               let ty = player.body.y + player.target.y;
@@ -510,7 +510,7 @@ function incoming(message, socket) {
           }
         } break;
           case "kill": { // Kill what your mouse is over
-            if (player.body != null && socket.permissions) {
+           if (socket.permissions && socket.permissions.AllowKeyCommands) {
               entities.forEach(o => {
                 if (o !== player.body != null && util.getDistance(o, {
                   x: player.target.x + player.body.x,
@@ -524,7 +524,7 @@ function incoming(message, socket) {
           }
               break;
           case "heal": { // Kill what your mouse is over
-            if (player.body != null && socket.permissions) {
+            if (socket.permissions && socket.permissions.AllowKeyCommands) {
               entities.forEach(o => {
                 if (o !== player.body != null && util.getDistance(o, {
                   x: player.target.x + player.body.x,
