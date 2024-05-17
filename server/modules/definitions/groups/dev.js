@@ -3168,7 +3168,7 @@ Class.IoncannonTank = {
   GUNS: [ {
          POSITION: [ 47, 12, 1, 34, 0, 0, 0, ],
          PROPERTIES: {
-         SHOOT_SETTINGS: combineStats([g.basic, g.sniper, {speed: 30}, {damage: 500}, {reload: 10}, {recoil: 30}]),
+         SHOOT_SETTINGS: combineStats([g.basic, g.sniper, {speed: 20}, {damage: 500}, {reload: 10}, {recoil: 30}]),
          TYPE: "IonBullet",
          DIE_AT_RANGE: false
          }, }, {
