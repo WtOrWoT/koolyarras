@@ -781,7 +781,47 @@ class io_orbit extends IO {
         this.body.facing = angle;
     }
 }
-
+class io_omegaOrbit extends IO {
+   constructor(body, opts = {}) {
+       super(body);
+       this.realDist = 0;
+       this.invertRotation = opts.invertRotation ?? false;
+       this.invertDistance = opts.invertDistance ?? false;
+       this.addition = opts.addition ?? 0;
+       this.subtraction = opts.subtraction ?? 0;
+       this.spinAddition = opts.spinAddition ?? 0;
+       this.spinMulti = opts.spinMulti ?? 1;
+   }
+   think(input) {
+       let invertRotationFactor = this.invertRotation ? -1 : 1,
+           invertDistance = this.invertDistance ? -1 : 1,
+           master = this.body.master.master,
+           dist = this.invertDistance ? master.inverseDist : master.dist,
+           angle = (this.body.angle * Math.PI / 180 + (master.angle * (this.spinMulti))) * invertRotationFactor;
+      
+       if(this.realDist > dist){
+           this.realDist -= Math.min(10, Math.abs(this.realDist - dist));
+       }
+       else if(this.realDist < dist){
+           this.realDist += Math.min(10, Math.abs(dist - this.realDist));
+       }
+       this.body.x = master.x + Math.cos(angle) * (this.realDist + (master.size * this.addition) - (master.size * this.subtraction));
+       this.body.y = master.y + Math.sin(angle) * (this.realDist + (master.size * this.addition) - (master.size * this.subtraction));
+      
+       this.body.facing = angle;
+   }
+}
+class io_turretWithMotion extends IO {
+    constructor(b, opts = {}) {
+        super(b)
+    }
+    think(input) {
+        return {
+            target: this.body.master.velocity,
+            main: true,
+        };
+    }
+}
 class io_disableOnOverride extends IO {
     constructor(body) {
         super(body);
@@ -846,6 +886,7 @@ let ioTypes = {
     hangOutNearMaster: io_hangOutNearMaster,
     fleeAtLowHealth: io_fleeAtLowHealth,
     wanderAroundMap: io_wanderAroundMap,
+    turretWithMotion: io_turretWithMotion,
 };
 
 module.exports = { ioTypes, IO };

@@ -3575,7 +3575,291 @@ Class.trplnrBossVulnerableForm = {
         }
     }]
 }
-
+Class.IonBullet = {
+  PARENT: "bullet",
+  DIE_AT_RANGE: false,
+  SHAPE: 1,
+  GUNS: [ {
+         POSITION: [ 6, 10, -1.4, 8, 0, 0, 0, ],
+         }, {
+         POSITION: [ 5, 10, 1, 15, 0, 0, 0, ],
+         }, {
+         POSITION: [ 15, 1, -10, 21, 0, 0, 0, ],
+         }, {
+         POSITION: [ 4, 13, 1, -10, 0, 0, 0, ],
+         }, {
+         POSITION: [ 5, 14, 1, -15, 0, 0, 0, ],
+         PROPERTIES: {
+         COLOR: 'orange'
+         }}, {
+         POSITION: [ 14, 14, 1, -6, 0, 0, 0, ],
+          PROPERTIES: {
+         COLOR: 'orange'
+         } }, 
+  ],
+};
+Class.Ioncannon = {
+  PARENT: "genericTank",
+  LABEL: "Ion Cannon",
+  SHAPE: 1,
+  BODY: {
+    FOV: 300,
+  },
+  GUNS: [ {
+         POSITION: [ 47, 12, 1, 34, 0, 0, 0, ],
+         PROPERTIES: {
+         SHOOT_SETTINGS: combineStats([g.basic, g.sniper, {speed: 30}, {damage: 500}, {reload: 10}, {recoil: 30}]),
+         TYPE: "IonBullet",
+         DIE_AT_RANGE: false
+         }, }, {
+         POSITION: [ 29, 16, 1, 4, 0, 0, 0, ],
+         }, {
+         POSITION: [ 32, 25, 1, -27, 0, 0, 0, ],
+         PROPERTIES: {
+         COLOR: 'orange'
+         } }, {
+         POSITION: [ 22, 19, 1, 8, 0, 0, 0, ],
+         }, {
+         POSITION: [ 22, 16, 1, 8, 0, 0, 0, ],
+         }, {
+         POSITION: [ 22, 8, 1, 8, 0, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 37, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 37, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 43, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 43, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 49, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 49, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 55, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 55, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 61, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 61, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 67, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 67, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 73, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 73, 5, 0, 0, ],
+         }, {
+         POSITION: [ 22, 1, 1, -22, 14, 0, 0, ],
+         }, {
+         POSITION: [ 22, 1, 1, -22, -14, 0, 0, ],
+         }, {
+         POSITION: [ 5, 1, 1, -22, 14, 0, 0, ],
+         }, {
+         POSITION: [ 5, 1, 1, -22, -14, 0, 0, ],
+         }, 
+     ],
+};
+Class.elitesniper = {
+    PARENT: ["elite"],
+    UPGRADE_LABEL: "Elite Sniper",
+    COLOR: "orange",
+    INVISIBLE: [0.06, 0.01],
+    DIE_AT_RANGE: false,
+    BODY: {
+    FOV: 5 * base.FOV,
+    },
+    UPGRADE_COLOR: "grey",
+    AI: { NO_LEAD: false },
+    TURRETS: [
+        {
+            POSITION: [14, 6, 0, 180, 190, 0],
+            TYPE: "autoSmasher",
+        }, {
+            POSITION: [14, 6, 0, 60, 190, 0],
+            TYPE: "autoSmasher",
+        }, {
+            POSITION: [14, 6, 0, 300, 190, 0],
+            TYPE: "autoSmasher",
+        }, {
+            POSITION: [10, 0, 0, 0, 360, 1],
+            TYPE: [ "Ioncannon", { COLOR: -1 } ],
+        },
+    ],
+};
+Class.awpSQRT_pi_X_2 = (() => {
+    g.laser = [2, 1, 1, 1, 1.1, 1.2, 1.3, 1.9, 1, 1, 1, 1, 1]
+    Class.laser = {
+        SHAPE: 2.5,
+        PARENT: ["bullet"]
+    }
+    Class.laserStreamliner = {
+        PARENT: ["autoTankGun"],
+        LABEL: "Laser Streamliner",
+        BODY: {
+            RECOIL_MULTIPLIER: 0
+        },
+        GUNS: ((output=[])=>{
+            for(let i=0;i<4;i++){
+                output.push({
+                    POSITION: [22 - i*2.5, 8, 1, 0, 0, 0, [0,0.25,0.5,0.75][i]],
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.minigun, g.streamliner, g.laser]),
+                        TYPE: "laser"
+                    }
+                })
+            }
+            output.push({
+                POSITION: [25, 3, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    COLOR: "#006CB2"
+                }
+            })
+            return output
+        })()
+    }
+    Class.triLaserStreamliner = {
+        PARENT: ["autoTankGun"],
+        LABEL: "Tri-Laser Streamliner",
+        COLOR: "#006CB2",
+        BODY: {
+            RECOIL_MULTIPLIER: 0
+        },
+        GUNS: ((output=[])=>{
+            for (let k = 0; k < 3; k++) {
+                for(let i=0;i<4;i++){
+                    output.push({
+                        POSITION: [22 - i*2.5, 8, 1, 0, 0, k*(360/3), [0,0.25,0.5,0.75][i]],
+                        PROPERTIES: {
+                            SHOOT_SETTINGS: combineStats([g.basic, g.minigun, g.streamliner, g.laser]),
+                            TYPE: "laser"
+                        }
+                    })
+                }
+                output.push({
+                    POSITION: [25, 3, 1, 0, 0, k*(360/3), 0],
+                    PROPERTIES: {
+                        COLOR: "#006CB2"
+                    }
+                })
+            }
+            return output
+        })()
+    }
+    Class.laserStreamlinerV2 = {
+        PARENT: ["autoTankGun"],
+        LABEL: "Laser Streamliner V2",
+        COLOR: "#006CB2",
+        BODY: {
+            RECOIL_MULTIPLIER: 0
+        },
+        GUNS: ((output=[])=>{
+            for(let i=0;i<6;i++){
+                output.push({
+                    POSITION: [24.5 - i*2.5, 8, 1, 0, 0, 0, [0,0.2,0.4,0.6,0.8][i]],
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.minigun, g.streamliner, g.laser]),
+                        TYPE: "laser"
+                    }
+                })
+            }
+            output.push({
+                POSITION: [27.5, 3, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    COLOR: "#006CB2"
+                }
+            })
+            return output
+        })()
+    }
+    Class.octoLaser = {
+        PARENT: ["autoTankGun"],
+        LABEL: "Laser Streamliner",
+        COLOR: "#006CB2",
+        BODY: {
+            RECOIL_MULTIPLIER: 0
+        },
+        GUNS: ((output=[])=>{
+            for(let i=0;i<8;i++){
+                output.push({
+                    POSITION: [18, 8, 1, 0, 0, i*(360/8), [0,0.5][i%2]],
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.flankGuard, g.spam, g.laser]),
+                        TYPE: "laser"
+                    }
+                },{
+                    POSITION: [20, 3, 1, 0, 0, i*(360/8), 0],
+                    PROPERTIES: {
+                        COLOR: "#006CB2"
+                    }
+                })
+            }
+            return output
+        })()
+    }
+    Class.placingBox = {
+        SHAPE: 4,
+        COLOR: "#006CB2",
+        MIRROR_MASTER_ANGLE: true,
+        TURRETS: ((output=[]) => {
+            for (let i = 0; i < 5; i++) {
+                output.push({
+                    POSITION: [2, 9, [-6, -3, 0, 3, 6][i], 90, 180, 0],
+                    TYPE: "laserStreamliner"
+                },{
+                    POSITION: [2, 9, [-6, -3, 0, 3, 6][i], -90, 180, 0],
+                    TYPE: "laserStreamliner"
+                })
+            }
+            for (let i = 0; i < 4; i++) {
+                output.push({
+                    POSITION: [5, 7, 0, (i+.5)*(360/4), 180, 1],
+                    TYPE: "laserStreamlinerV2"
+                })
+            }
+            output.push({
+                POSITION: [6, 0, 0, 0, 180, 1],
+                TYPE: "triLaserStreamliner"
+            })
+            return output
+        })()
+    }
+    return {
+        PARENT: ["genericBoss"],
+        LABEL: "AWP-SQRT(PI*2)",
+        COLOR: "#006CB2",
+        SHAPE: 8,
+        SIZE: 90,
+        BODY: {
+            RECOIL_MULTIPLIER: 0
+        },
+        TURRETS: ((output=[])=>{
+            for (let i = 0; i < 8; i++) {
+                for (let k = 0; k < 4; k++) {
+                    output.push({
+                        POSITION: [9, 6 + 8*(k+1), 0, i*(360/8), 0, 0],
+                        TYPE: "placingBox"
+                    })
+                }
+            }
+            for (let i = 0; i < 15; i++) {
+                output.push({
+                    POSITION: [2, 8, 0, i*(360/15), 180, 1],
+                    TYPE: ["laserStreamliner", {
+                        COLOR: "#006CB2"
+                    }]
+                })
+            }
+            output.push({
+                POSITION: [8, 0, 0, 0, 360, 1],
+                TYPE: ["octoLaser", {CONTROLLERS: [["spin", { speed: -0.025 }]]}]
+            })
+            return output
+        })()
+    }
+})()
 let testLayeredBoss = new LayeredBoss("testLayeredBoss", "Test Layered Boss", "terrestrial", 7, 3, "terrestrialTrapTurret", 5, 7, {SPEED: 10});
 testLayeredBoss.addLayer({gun: {
     POSITION: [3.6, 7, -1.4, 8, 0, null, 0],

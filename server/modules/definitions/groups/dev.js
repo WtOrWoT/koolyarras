@@ -2,6 +2,88 @@ const { combineStats, menu, addAura, makeDeco } = require('../facilitators.js');
 const { base, gunCalcNames, basePolygonDamage, basePolygonHealth, dfltskl, statnames } = require('../constants.js');
 const g = require('../gunvals.js');
 
+Class.bulletColor = makeDeco(0, "#e03e41")
+Class.bulletAura = {
+  PARENT: "bullet",
+  MOTION_TYPE: "withMaster",
+  CLEAR_ON_MASTER_UPGRADE: true,
+  BODY:{
+	  HEALTH: base.HEALTH * 1000,
+	  DAMAGE: 0
+  },
+  ON: [{
+	  event: 'tick',
+	  handler: ({body}) => {
+			  body.SIZE += 5
+			  if (body.SIZE >= 100) {body.kill()}
+
+
+	  }
+  },
+],
+TURRETS: [
+  {
+	  POSITION: [20, 0, 0, 0, 0, 1],
+	  TYPE: ["bulletColor"],
+  },
+],
+}
+Class.bulletAura2 = {
+	PARENT: "bullet",
+	MOTION_TYPE: "withMaster",
+	CLEAR_ON_MASTER_UPGRADE: true,
+	BODY:{
+		HEALTH: base.HEALTH * 1000,
+		DAMAGE: 25,
+		DENSITY: 0,
+		SPEED: 0,
+		PUSHABILITY: 0,
+	},
+	ON: [{
+		event: 'tick',
+		handler: ({body}) => {
+				body.SIZE += 5
+				if (body.SIZE >= 100) {body.kill()}
+
+
+		}
+	},
+  ],
+  TURRETS: [
+	{
+		POSITION: [20, 0, 0, 0, 0, 1],
+		TYPE: ["bulletColor"],
+	},
+],
+  }
+Class.bulletAuraAnnih = {
+	PARENT: "bullet",
+	MOTION_TYPE: "withMaster",
+	CLEAR_ON_MASTER_UPGRADE: true,
+	BODY:{
+		HEALTH: base.HEALTH * 100000000000,
+		DAMAGE: 2500,
+		DENSITY: 0,
+		SPEED: 0,
+		PUSHABILITY: 0,
+	},
+	ON: [{
+		event: 'tick',
+		handler: ({body}) => {
+				body.SIZE += 5
+				if (body.SIZE >= 100) {body.kill()}
+
+
+		}
+	},
+  ],
+  TURRETS: [
+	{
+		POSITION: [20, 0, 0, 0, 0, 1],
+		TYPE: ["bulletColor"],
+	},
+],
+  }
 // Menus
 Class.developer = {
     PARENT: "genericTank",
@@ -37,14 +119,35 @@ Class.developer = {
     ],
     GUNS: [
         {
+          POSITION: [2, 14, 1, 2.5, 0, 0, 0],
+				PROPERTIES: {
+				  SHOOT_SETTINGS: combineStats([g.basic,{speed: 0, maxSpeed: 0, reload: 0.2, recoil: 0}]),
+				  TYPE: [Class.bulletAura2,{ALPHA:0.05}],
+				  ALT_FIRE: true,
+				  SYNCS_SKILLS: true,
+				  AUTOFIRE: false,
+				  IDENTIFIER: 'auraGun'
+				},
+			  },
+			{
+        POSITION: [2, 14, 1, 2.5, 0, 0, 0],
+				PROPERTIES: {
+				  SHOOT_SETTINGS: combineStats([g.basic,{speed: 0, maxSpeed: 0, reload: 0.2, recoil: 0}]),
+				  TYPE: [Class.bulletAura2,{ALPHA:0.05}],
+				  ALT_FIRE: true,
+				  SYNCS_SKILLS: true,
+				  AUTOFIRE: false,
+				  IDENTIFIER: 'auraGun'
+				},
+			  },
+			{
             POSITION: [18, 10, -1.4, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.op]),
-                TYPE: "developerBullet"
-            }
-        }
-    ]
-}
+                TYPE: "developerBullet",
+                ALT_FIRE: false
+}, },
+], };
 Class.spectator = {
     PARENT: "genericTank",
     LABEL: "Spectator",
@@ -868,6 +971,260 @@ Class.mlrs = {
          }, 
      ],
 };
+Class.superSnake = {
+    PARENT: "autoswarm",
+    LABEL: "Cosmic Snake",
+    INDEPENDENT: true, // да я неправильно написал independent
+    SHAPE: 0,
+    BODY: {
+      FOV: 1,
+    },
+    GUNS: [
+        {
+            POSITION: [6, 12, 1.4, 8, 0, 180, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.snakeskin]),
+                TYPE: ["semitransparentBullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },
+        {
+            POSITION: [10, 12, 0.8, 8, 0, 180, 0.5],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake]),
+                TYPE: ["semitransparentBullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 3, 0, 0, 0, 30, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 3, 0, 0, 0, 90, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },
+      {
+            POSITION: [1, 3, 0, 0, 0, 120, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },
+      {
+            POSITION: [1, 3, 0, 0, 0, 210, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 3, 0, 0, 0, 300, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 5, 0, 0, 0, 15, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 5, 0, 0, 0, 40, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },
+      {
+            POSITION: [1, 5, 0, 0, 0, 320, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },
+      {
+            POSITION: [1, 6, 0, 0, 0, 267, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 6, 0, 0, 0, 274, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 10, 0, 0, 0, 170, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },
+      {
+            POSITION: [1, 7, 0, 0, 0, -160, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },{
+            POSITION: [1, 5, 0, 0, 0, 180, 0],
+            PROPERTIES: {
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary, g.snake, g.ultraspread]),
+                SHOOT_ON_DEATH: true,
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        },
+    ],
+  TURRETS: [{
+        POSITION: {
+            ANGLE: 180,
+            LAYER: 1
+        },
+        TYPE: ["bullet", {
+            INDEPENDENT: true,
+            COLOR: 12
+        }]
+    }]
+};
+Class.supersnaketesting = {
+    PARENT: "genericTank",
+    LABEL: "Cosmic Snake Missile Test",
+    DANGER: 4,
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic]),
+                TYPE: "superSnake",
+            }
+        }
+    ]
+}
+Class.snakedesigntest = {
+   PARENT: "genericTank",
+   LABEL: 'Cosmic Snake Launcher',
+   GUNS: [ {
+         POSITION: [ 25, 17, 0.4, 3, 0, 0, 0, ],
+         }, {
+         POSITION: [ 20, 19, 0.85, 3, 0, 0, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator, {range: 3}]),
+            TYPE: "superSnake"
+         }, }, {
+         POSITION: [ 16, 6, 1, 0, 6.5, -3, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 16, 6, 1, 0, -6.5, 3, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 16, 4, 0.7, 7, 0, 0, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 16, 4, 0.7, 3, 0, 0, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 16, 4, 0.7, -1, 0, 0, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 16, 4, 0.7, -1, 6, 0, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 16, 4, 0.7, -1, -6, 0, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 3, 4, 1, 9, 0, -75, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 3, 4, 1, 9, 0, 75, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 3, 4, 1, 9, 0, -120, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 3, 4, 1, 9, 0, 120, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 3, 4, 1, 9, 0, 160, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, {
+         POSITION: [ 3, 4, 1, 9, 0, -160, 0, ],
+         PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.predator,g.fake]),
+            TYPE: "bullet"
+         }, }, 
+     ],
+};
 Class.thornTrapExplode = {
     PARENT: [Class.trap],
     LABEL: 'Thorn',
@@ -1278,6 +1635,9 @@ Class.spikyBasic = {
      ],
 };
 Class.bosses = menu("Bosses")
+
+Class.miscTanks = menu("Misc")
+Class.betaTanks = menu("Beta Tanks")
 
 Class.sentries = menu("Sentries")
 Class.sentries.COLOR = "pink"
@@ -2719,7 +3079,7 @@ Class.bulletSpawnTest = {
 
 Class.levels = menu("Levels")
 Class.levels.UPGRADES_TIER_0 = []
-for (let i = 0; i < 12; i++) {
+for (let i = 0; i < 20; i++) {
     let LEVEL = i * c.TIER_MULTIPLIER;
     Class["level" + LEVEL] = {
         PARENT: ["levels"],
@@ -2798,16 +3158,80 @@ Class.whirlwind = {
         return output
     })()
 }
-
-Class.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "spectator", "levels", "teams", "eggGenerator", "testing", "addons"];
-    Class.tanks.UPGRADES_TIER_0 = ["basic", "unavailable", "spectator", "dominators", "sanctuaries", "mothership", "baseProtector", "antiTankMachineGun", "arenaCloser", "ATWB","Headbutter","BMCdev", "BMCeventandBTwYT","BMCsub","sideMortars","sideRpgs","antiTankMissileLauncher","pentahone","notTurrets","splitbutter","ultrafrag","HyperFragtrapper","HyperFragtwin","HFragspray","lrcm","mlrs","cursedBasic","drawingthingytest","thornyLauncher","spikyBasic","coltank","warplane","bigCheez","theupgraderanaway","omegaPred"];
+Class.IoncannonTank = {
+  PARENT: "genericTank",
+  LABEL: "Ion Cannon",
+  SHAPE: 1,
+  BODY: {
+    FOV: 2,
+  },
+  GUNS: [ {
+         POSITION: [ 47, 12, 1, 34, 0, 0, 0, ],
+         PROPERTIES: {
+         SHOOT_SETTINGS: combineStats([g.basic, g.sniper, {speed: 30}, {damage: 500}, {reload: 10}, {recoil: 30}]),
+         TYPE: "IonBullet",
+         DIE_AT_RANGE: false
+         }, }, {
+         POSITION: [ 29, 16, 1, 4, 0, 0, 0, ],
+         }, {
+         POSITION: [ 32, 25, 1, -27, 0, 0, 0, ],
+         PROPERTIES: {
+         COLOR: 'orange'
+         } }, {
+         POSITION: [ 22, 19, 1, 8, 0, 0, 0, ],
+         }, {
+         POSITION: [ 22, 16, 1, 8, 0, 0, 0, ],
+         }, {
+         POSITION: [ 22, 8, 1, 8, 0, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 37, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 37, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 43, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 43, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 49, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 49, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 55, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 55, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 61, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 61, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 67, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 67, 5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 73, -5, 0, 0, ],
+         }, {
+         POSITION: [ 2, 6, 1, 73, 5, 0, 0, ],
+         }, {
+         POSITION: [ 22, 1, 1, -22, 14, 0, 0, ],
+         }, {
+         POSITION: [ 22, 1, 1, -22, -14, 0, 0, ],
+         }, {
+         POSITION: [ 5, 1, 1, -22, 14, 0, 0, ],
+         }, {
+         POSITION: [ 5, 1, 1, -22, -14, 0, 0, ],
+         }, 
+     ],
+};
+Class.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "spectator", "levels", "teams", "eggGenerator", "testing", "addons","betaTanks","miscTanks"];
+    Class.tanks.UPGRADES_TIER_0 = ["basic", "unavailable", "spectator", "dominators", "sanctuaries", "mothership", "baseProtector", "antiTankMachineGun", "arenaCloser"];
+      Class.miscTanks.UPGRADES_TIER_0 = ["ATWB","Headbutter","BMCdev", "BMCeventandBTwYT","BMCsub","sideMortars","sideRpgs","antiTankMissileLauncher","pentahone","notTurrets","splitbutter","ultrafrag","HyperFragtrapper","HyperFragtwin","HFragspray","lrcm","mlrs","cursedBasic","drawingthingytest","thornyLauncher","spikyBasic","coltank","warplane","bigCheez","theupgraderanaway","omegaPred"];
         Class.unavailable.UPGRADES_TIER_0 = ["healer"];
         Class.dominators.UPGRADES_TIER_0 = ["destroyerDominator", "gunnerDominator", "trapperDominator"];
         Class.sanctuaries.UPGRADES_TIER_0 = ["sanctuaryTier1", "sanctuaryTier2", "sanctuaryTier3", "sanctuaryTier4", "sanctuaryTier5", "sanctuaryTier6"];
 
     Class.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "rammers", "terrestrials", "celestials", "eternals", "devBosses"];
         Class.sentries.UPGRADES_TIER_0 = ["sentrySwarm", "sentryGun", "sentryTrap", "shinySentrySwarm", "shinySentryGun", "shinySentryTrap", "sentinelMinigun", "sentinelLauncher", "sentinelCrossbow"];
-        Class.elites.UPGRADES_TIER_0 = ["eliteDestroyer", "eliteGunner", "eliteSprayer", "eliteBattleship", "eliteSpawner", "eliteTrapGuard", "eliteSpinner", "eliteSkimmer", "legionaryCrasher", "guardian", "defender", "sprayerLegion"];
+        Class.elites.UPGRADES_TIER_0 = ["eliteDestroyer", "eliteGunner", "eliteSprayer", "eliteBattleship", "eliteSpawner", "eliteTrapGuard", "eliteSpinner", "eliteSkimmer", "legionaryCrasher", "guardian", "defender", "sprayerLegion","elitesniper"];
         Class.mysticals.UPGRADES_TIER_0 = ["sorcerer", "summoner", "enchantress", "exorcistor", "shaman"];
         Class.nesters.UPGRADES_TIER_0 = ["nestKeeper", "nestWarden", "nestGuardian"];
         Class.rogues.UPGRADES_TIER_0 = ["roguePalisade", "rogueArmada", "julius", "genghis", "napoleon"];
@@ -2816,6 +3240,7 @@ Class.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "spectator", "levels", "te
         Class.celestials.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia", "atlas", "rhea", "julius", "genghis", "napoleon"];
         Class.eternals.UPGRADES_TIER_0 = ["odin", "kronos"];
         Class.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "zenphiaBoss", "dogeiscutBoss", "trplnrBoss"];
+        Class.betaTanks.UPGRADES_TIER_0 = ["supersnaketesting","snakedesigntest","empSniper","IoncannonTank"];
 
     Class.testing.UPGRADES_TIER_0 = ["features", "overpowered", "whirlwind", "vanquisher", "mummifier", "tracker3"];
         Class.features.UPGRADES_TIER_0 = ["diamondShape", "rotatedTrap", "colorMan", "miscTest", "mmaTest", "vulnturrettest", "onTest", "alphaGunTest", "strokeWidthTest", "testLayeredBoss", "tooltipTank", "turretLayerTesting", "bulletSpawnTest", "auraBasic", "auraHealer", "weirdAutoBasic", "ghoster", "switcheroo", ["developer", "developer"]]
